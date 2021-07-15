@@ -1,105 +1,62 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from "react-hook-form";
+import {register as setRegister} from '../action/AuthActions'
+
 
 const RegisterScreen = () => {
+    const dispatch = useDispatch();
+    const { register, handleSubmit } = useForm();
+
+    const userRegister = useSelector((state) => state.register)
+    const { loading, error } = userRegister;
+
+    // Form on submit handler
+    const onSubmit = (formData) => {
+        // console.log(`data`, data)
+        dispatch(setRegister(formData))
+    }
+
     return (
         <div className="container d-flex justify-content-center py-5">
-            <form className="col-md-6 col-offset-md-3 ">
+            <form  onSubmit={handleSubmit(onSubmit)} method='post' className="col-md-6 col-offset-md-3 ">
+                {error && <h3>{error}</h3>}
 
-            <div class="form-group">
-                <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1" class="form-label mt-4">Example select</label>
-                <select class="form-select" id="exampleSelect1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect2" class="form-label mt-4">Example multiple select</label>
-                <select multiple="" class="form-select" id="exampleSelect2">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleTextarea" class="form-label mt-4">Example textarea</label>
-                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="formFile" class="form-label mt-4">Default file input example</label>
-                <input class="form-control" type="file" id="formFile" />
-            </div>
-            
-            <legend class="mt-4">Radio buttons</legend>
-            <div class="form-check">
-                <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="" />
-                Option one is this and that—be sure to include why it's great
-                </label>
-            </div>
-            <div class="form-check">
-                <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2" />
-                Option two can be something else and selecting it will deselect option one
-                </label>
-            </div>
-            <div class="form-check disabled">
-                <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled="" />
-                Option three is disabled
-                </label>
-            </div>
-            {/* </div> */}
-            
-            <legend class="mt-4">Checkboxes</legend>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault" >
-                Default checkbox
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="" />
-                <label class="form-check-label" for="flexCheckChecked">
-                Checked checkbox
-                </label>
-            </div>
-           
+                <div class="form-group">
+                    <label for="name" class="form-label mt-2">Full Name </label>
+                    <input {...register("fullName",{required: true})} type="text" class="form-control"  placeholder="Enter Full Name" />
+                </div>
 
-            <legend class="mt-4">Switches</legend>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="" />
-                <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>
-            </div>
-            
-            <legend class="mt-4">Ranges</legend>
-                <label for="customRange1" class="form-label">Example range</label>
-                <input type="range" class="form-range" id="customRange1" />
-                <label for="disabledRange" class="form-label">Disabled range</label>
-                <input type="range" class="form-range" id="disabledRange" disabled="" />
-                <label for="customRange3" class="form-label">Example range</label>
-                <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange3" />
-        
-            <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-2">Email address</label>
+                    <input {...register("email",{required: true})} type="email" class="form-control" id="exampleInputEmail1"  placeholder="Enter email" />
+                </div>
 
-        </form>
+                <div class="form-group">
+                    <label for="phone" class="form-label mt-2">Phone*</label>
+                    <input {...register("phone", {required: true})} type="tel" class="form-control" id="phone"  placeholder="Enter Phone number" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="exampleSelect1" class="form-label mt-2">Role</label>
+                    <select {...register("role", {required: true})} class="form-select" name="role" id="exampleSelect1">
+                        <option >Select</option>
+                        <option value="manager">Manager</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label mt-2">Password</label>
+                    <input {...register("password")} type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword2" class="form-label mt-2">Confirm Password</label>
+                    <input {...register("confirm Password")} type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm Password" />
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
         </div>
     )
 }
