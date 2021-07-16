@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import {register as setRegister} from '../action/AuthActions'
-
+import Message from '../components/Partials/Message';
 
 const RegisterScreen = () => {
     const dispatch = useDispatch();
@@ -19,9 +19,13 @@ const RegisterScreen = () => {
 
     return (
         <div className="container d-flex justify-content-center py-5">
+              
             <form  onSubmit={handleSubmit(onSubmit)} method='post' className="col-md-6 col-offset-md-3 ">
-                {error && <h3>{error}</h3>}
-
+                <Message success ={!error} fail={error} >
+                    {error}
+                </Message>
+                {/* {error && <h3>{error}</h3>} */}
+                <div><h2>REGISTER </h2></div>
                 <div class="form-group">
                     <label for="name" class="form-label mt-2">Full Name </label>
                     <input {...register("fullName",{required: true})} type="text" class="form-control"  placeholder="Enter Full Name" />
@@ -55,7 +59,7 @@ const RegisterScreen = () => {
                     <label for="exampleInputPassword2" class="form-label mt-2">Confirm Password</label>
                     <input {...register("confirm Password")} type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm Password" />
                 </div>
-                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                <button type="submit" class="btn btn-primary mt-4">{loading ? "Submiting" : "Submit" }</button>
             </form>
         </div>
     )
