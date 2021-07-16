@@ -1,15 +1,33 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {register as setRegister} from '../action/AuthActions'
 import Message from '../components/Partials/Message';
+import './RegisterScreen.css';
 
 const RegisterScreen = () => {
+    
+
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
 
     const userRegister = useSelector((state) => state.register)
     const { loading, error } = userRegister;
+
+    // toast notification
+    // const notify = () => toast.error(error, {
+    //     position: "top-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     });
+
+   
 
     // Form on submit handler
     const onSubmit = (formData) => {
@@ -19,12 +37,30 @@ const RegisterScreen = () => {
 
     return (
         <div className="container d-flex justify-content-center py-5">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                />
+                
+            <ToastContainer />
               
             <form  onSubmit={handleSubmit(onSubmit)} method='post' className="col-md-6 col-offset-md-3 ">
-                <Message success ={!error} fail={error} >
+                
+                   
+                <Message  fail={error}>
                     {error}
                 </Message>
-                {/* {error && <h3>{error}</h3>} */}
+           
+               
+
+                {/* {error && notify()} */}
                 <div><h2>REGISTER </h2></div>
                 <div class="form-group">
                     <label for="name" class="form-label mt-2">Full Name </label>
